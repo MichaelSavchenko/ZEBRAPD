@@ -26,15 +26,17 @@ public class ClientService {
     }
 
     public Client createClient(Client client) {
-        Client clientByEmail = clientRepository.getClientByEmail(client.getEmail());
-        validateEmail(clientByEmail, client.getEmail());
-        Client clientByPhone = clientRepository.getClientByPhone(client.getPhoneNumber());
-        validatePhoneNumber(client, clientByPhone);
+        validateEmail(client.getEmail());
+        validatePhoneNumber(client.getPhoneNumber());
         return clientRepository.createClient(client);
     }
-
-    public boolean deactivateClient(int clientId){
-        return clientRepository.deactivateClient(clientId);
+    //todo validation of phone and mail
+    public boolean updateClient(Client client){
+        try {
+            return clientRepository.updateClient(client);
+        } catch (Exception e){
+            throw new ValidationException(e.getMessage());
+        }
     }
 
     public List<Client> getAllClients() {
@@ -49,19 +51,17 @@ public class ClientService {
         return clientRepository.getAllInactiveClients();
     }
 
-    public Client getClientByPhoneNumber(String phoneNumber){
-        return clientRepository.getClientByPhone(phoneNumber);
-    }
-
-    private void validatePhoneNumber(Client client, Client clientByPhone) {
+    private void validatePhoneNumber(String phoneNumber) {
+        Client clientByPhone = clientRepository.getClientByPhone(phoneNumber);
         if (Objects.nonNull(clientByPhone)){
-            throw new ValidationException("Client with such phone number already exists: " + client.getPhoneNumber());
+            throw new ValidationException("Client with such phone number already exists: " + clientByPhone.getPhoneNumber());
         }
     }
 
-    private void validateEmail(Client clientByEmail, String email) {
+    private void validateEmail(String email) {
+        Client clientByEmail = clientRepository.getClientByEmail(email);
         if (Objects.nonNull(clientByEmail)) {
-            throw new ValidationException("Client with such email already exists: " + email);
+            throw new ValidationException("Client with such email already exists: " + clientByEmail.getEmail());
         }
     }
 

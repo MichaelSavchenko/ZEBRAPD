@@ -2,13 +2,15 @@ package com.zebrapd.usermanagement.repositoty;
 
 import com.zebrapd.usermanagement.entity.Client;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,12 +31,14 @@ public class ClientRepository {
 
     public Client getClientByEmail(String email) {
         String query = "SELECT * FROM Client WHERE email = ?";
-        return jdbcTemplate.queryForObject(query, new Object[]{email}, CLIENT_ROW_MAPPER);
+        List<Client> clients = jdbcTemplate.query(query, new Object[]{email}, CLIENT_ROW_MAPPER);
+        return clients.stream().findFirst().orElse(null);
     }
 
-    public Client getClientByPhone(String phoneNumber){
+    public Client getClientByPhone(String phoneNumber) {
         String query = "SELECT * FROM Client WHERE phone = ?";
-        return jdbcTemplate.queryForObject(query, new Object[]{phoneNumber}, CLIENT_ROW_MAPPER);
+        List<Client> clients = jdbcTemplate.query(query, new Object[]{phoneNumber}, CLIENT_ROW_MAPPER);
+        return clients.stream().findFirst().orElse(null);
     }
 
     public Client createClient(Client client) {
@@ -56,10 +60,16 @@ public class ClientRepository {
         return client;
     }
 
-    public boolean deactivateClient(int clientId){
-        String query = "UPDATE Client SET active = false WHERE entity_id = ?";
-        int updatedRowsNumber = jdbcTemplate.update(query, clientId);
-        return updatedRowsNumber > 0;
+    public boolean updateClient(Client client) {
+        String query = "UPDATE Client SET first_name = ?, last_name = ?, email = ?, phone = ?, active = ? WHERE entity_id = ?";
+        return 0 < jdbcTemplate.update(
+            query,
+            client.getFirstName(),
+            client.getLastName(),
+            client.getEmail(),
+            client.getPhoneNumber(),
+            client.isActive(),
+            client.getEntityId());
     }
 
     public List<Client> getAllClients() {

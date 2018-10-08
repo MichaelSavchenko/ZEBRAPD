@@ -51,8 +51,8 @@ public class ClientController {
         return clientService.createClient(client);
     }
 
-    @PostMapping("deactivate/{clientId}")
-    public boolean deactivateClient(@PathVariable int clientId){
-        return clientService.deactivateClient(clientId);
+    @PostMapping("/update}")
+    public boolean deactivateClient(@RequestBody Client client){
+        return clientService.updateClient(client);
     }
 }
