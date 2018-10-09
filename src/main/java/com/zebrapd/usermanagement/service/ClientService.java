@@ -1,12 +1,15 @@
 package com.zebrapd.usermanagement.service;
 
 import com.zebrapd.usermanagement.entity.Client;
+import com.zebrapd.usermanagement.entity.Trainer;
 import com.zebrapd.usermanagement.error.exception.ValidationException;
 import com.zebrapd.usermanagement.repositoty.ClientRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+
+import static java.util.Objects.nonNull;
 
 @Service
 public class ClientService {
@@ -17,11 +20,11 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public Client getClientById(int id){
+    public Client getClientById(int id) {
         return clientRepository.getClientById(id);
     }
 
-    public Client getClientByEmail(String email){
+    public Client getClientByEmail(String email) {
         return clientRepository.getClientByEmail(email);
     }
 
@@ -30,13 +33,10 @@ public class ClientService {
         validatePhoneNumber(client.getPhoneNumber());
         return clientRepository.createClient(client);
     }
-    //todo validation of phone and mail
-    public boolean updateClient(Client client){
-        try {
-            return clientRepository.updateClient(client);
-        } catch (Exception e){
-            throw new ValidationException(e.getMessage());
-        }
+
+    public boolean updateClient(Client client) {
+        validateDuplications(client);
+        return clientRepository.updateClient(client);
     }
 
     public List<Client> getAllClients() {
@@ -51,16 +51,27 @@ public class ClientService {
         return clientRepository.getAllInactiveClients();
     }
 
+    private void validateDuplications(Client client) {
+        Client clientByEmail = clientRepository.getClientByEmail(client.getEmail());
+        if(nonNull(clientByEmail) && !Objects.equals(clientByEmail.getEntityId(), client.getEntityId())){
+            throw new ValidationException("Trainer with such email already exists: " + client.getEmail());
+        }
+        Client clientByPhone = clientRepository.getClientByPhone(client.getPhoneNumber());
+        if(nonNull(clientByPhone) && !Objects.equals(clientByPhone.getEntityId(), client.getEntityId())){
+            throw new ValidationException("Trainer with such email already exists: " + client.getEmail());
+        }
+    }
+
     private void validatePhoneNumber(String phoneNumber) {
         Client clientByPhone = clientRepository.getClientByPhone(phoneNumber);
-        if (Objects.nonNull(clientByPhone)){
+        if (nonNull(clientByPhone)) {
             throw new ValidationException("Client with such phone number already exists: " + clientByPhone.getPhoneNumber());
         }
     }
 
     private void validateEmail(String email) {
         Client clientByEmail = clientRepository.getClientByEmail(email);
-        if (Objects.nonNull(clientByEmail)) {
+        if (nonNull(clientByEmail)) {
             throw new ValidationException("Client with such email already exists: " + clientByEmail.getEmail());
         }
     }
