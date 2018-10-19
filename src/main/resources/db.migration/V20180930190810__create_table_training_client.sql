@@ -1,8 +1,7 @@
 CREATE TABLE training_client (
-  entity_id   serial  NOT NULL,
   training_id integer NOT NULL,
   client_id   integer NOT NULL,
-  CONSTRAINT training_client_pk PRIMARY KEY (entity_id)
+  CONSTRAINT training_client_pk PRIMARY KEY (training_id)
 ) WITH (
 OIDS = FALSE
 );

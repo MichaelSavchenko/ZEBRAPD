@@ -1,14 +1,16 @@
 package com.zebrapd.usermanagement.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 public class Training{
     private Integer entityId;
+    private TrainingType trainingType;
     private int receipts;
-    private LocalDate date;
+    private LocalDateTime localDateTime;
     private Trainer trainer;
-    private Set<Client> clients;
+    private List<Client> clients;
 
     public Integer getEntityId() {
         return entityId;
@@ -16,6 +18,14 @@ public class Training{
 
     public void setEntityId(Integer entityId) {
         this.entityId = entityId;
+    }
+
+    public TrainingType getTrainingType() {
+        return trainingType;
+    }
+
+    public void setTrainingType(TrainingType trainingType) {
+        this.trainingType = trainingType;
     }
 
     public int getReceipts() {
@@ -26,12 +36,12 @@ public class Training{
         this.receipts = receipts;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
     public Trainer getTrainer() {
@@ -42,11 +52,11 @@ public class Training{
         this.trainer = trainer;
     }
 
-    public Set<Client> getClients() {
+    public List<Client> getClients() {
         return clients;
     }
 
-    public void setClients(Set<Client> clients) {
+    public void setClients(List<Client> clients) {
         this.clients = clients;
     }
 }

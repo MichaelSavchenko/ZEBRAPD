@@ -2,14 +2,14 @@ package com.zebrapd.usermanagement.entity;
 
 import java.time.LocalDate;
 
-public class License {
+public class Subscription {
     private Integer entityId;
     private int clientId;
     private TrainingType type;
     private int numberOfTrainings;
     private int price;
     private LocalDate startDate;
-    private LocalDate expiratioDate;
+    private LocalDate expirationDate;
 
     public Integer getEntityId() {
         return entityId;
@@ -59,11 +59,11 @@ public class License {
         this.startDate = startDate;
     }
 
-    public LocalDate getExpiratioDate() {
-        return expiratioDate;
+    public LocalDate getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setExpiratioDate(LocalDate expiratioDate) {
-        this.expiratioDate = expiratioDate;
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

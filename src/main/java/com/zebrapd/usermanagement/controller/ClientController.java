@@ -52,7 +52,7 @@ public class ClientController {
     }
 
     @PostMapping("/update}")
-    public boolean deactivateClient(@RequestBody Client client){
+    public boolean updateClient(@RequestBody Client client){
         return clientService.updateClient(client);
     }
 }
