@@ -18,26 +18,29 @@ public class SubscriptionService {
         this.subscriptionRepository = subscriptionRepository;
     }
 
-    public Subscription getCurrentSubscriptionByType(int clientId, TrainingType type){
-        List<Subscription> activeSubscription = subscriptionRepository.getActiveSubscriptionByType(clientId, type);
+    public Subscription getLastSubscriptionByType(int clientId, TrainingType type){
+        List<Subscription> activeSubscription = subscriptionRepository.getSubscriptionsByType(clientId, type);
         return activeSubscription.stream()
             .min(Comparator.comparingInt(Subscription::getNumberOfTrainings))
             .orElseThrow(
-                ()-> new SubscriptionException(String.format("Usser '%s' has no active subscription of type %s", clientId, type)));
+                ()-> new SubscriptionException(String.format("User '%s' has no subscription of type %s", clientId, type)));
     }
 
     public List<Subscription> getNotExpiredSubscription(int clientId){
         return subscriptionRepository.getNotExpiredSubscription(clientId);
     }
 
-    //todo check debt get number of debt training
     public Subscription createSubscription(Subscription subscription){
+        Subscription lastSubscription = getLastSubscriptionByType(subscription.getClientId(), subscription.getType());
+        int numberOfTrainings = lastSubscription.getNumberOfTrainings();
+        if (numberOfTrainings < 0) {
+            int newNumberOfTrainings = (subscription.getNumberOfTrainings() + numberOfTrainings);
+            subscription.setNumberOfTrainings(newNumberOfTrainings);
+        }
         return subscriptionRepository.createSubscription(subscription);
     }
 
-    public boolean setNumberOftrainings (int numberOfTrainings, int licenseId){
+    public boolean setNumberOfTrainings(int numberOfTrainings, int licenseId){
         return subscriptionRepository.setNumberOfTrainings(numberOfTrainings, licenseId);
     }
 }
-
-//todo create training in 2 steps: 1 - check subscriptions (and create new if all are expired) 2 - create training

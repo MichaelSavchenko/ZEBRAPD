@@ -12,33 +12,41 @@ import java.util.List;
 
 @Service
 public class TrainingService {
-    
+
     private TrainingRepository trainingRepository;
     private SubscriptionService subscriptionService;
+    private ClientService clientService;
 
-    public TrainingService(TrainingRepository trainingRepository, SubscriptionService subscriptionService) {
+    public TrainingService(
+            TrainingRepository trainingRepository,
+            SubscriptionService subscriptionService,
+            ClientService clientService
+    ) {
         this.trainingRepository = trainingRepository;
         this.subscriptionService = subscriptionService;
+        this.clientService = clientService;
     }
-    
-    public SaveTrainingResponseDto saveTraining(Training training){
+
+    public SaveTrainingResponseDto saveTraining(Training training) {
         SaveTrainingResponseDto result = new SaveTrainingResponseDto();
-        List<Client> clients = training.getClients();
+        List<Integer> clientIds = training.getClientIds();
         TrainingType trainingType = training.getTrainingType();
 
-        for (Client client: clients) {
-            Subscription subscription = subscriptionService.getCurrentSubscriptionByType(client.getEntityId(), trainingType);
-            int trainingsLeft = subscription.getNumberOfTrainings() - 1;
-            if (trainingsLeft == 0){
-                result.addToLastTrainingLeft(client.getLastName());
-            } else if (trainingsLeft < 0) {
-                result.addNomoreTrainings(client.getLastName() + " " + trainingsLeft);
+        for (int clientId : clientIds) {
+            Subscription subscription = subscriptionService.getLastSubscriptionByType(clientId, trainingType);
+            int trainingsLeft = (subscription.getNumberOfTrainings() - 1);
+            if (trainingsLeft <= 0) {
+                Client clientById = clientService.getClientById(clientId);
+                if (trainingsLeft == 0) {
+                    result.addToLastTrainingLeft(clientById.getLastName());
+                } else {
+                    result.addNomoreTrainings(clientById.getLastName() + " " + trainingsLeft);
+                }
             }
-            subscriptionService.setNumberOftrainings(trainingsLeft, subscription.getEntityId());
+            subscriptionService.setNumberOfTrainings(trainingsLeft, subscription.getEntityId());
         }
 
-
-
+        trainingRepository.createTraining(training);
         return result;
     }
 }

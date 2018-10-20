@@ -24,7 +24,7 @@ public class SubscriptionController {
 
     @GetMapping("/getCurrentSubscriptionByType/{clientId}/{trainingType}")
     public Subscription getCurrentSubscriptionByType(@PathVariable int clientId, @PathVariable String trainingType){
-        return subscriptionService.getCurrentSubscriptionByType(clientId, TrainingType.valueOf(trainingType));
+        return subscriptionService.getLastSubscriptionByType(clientId, TrainingType.valueOf(trainingType));
     }
 
     @GetMapping("/getNotExpiredLicense/{clientId}")

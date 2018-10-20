@@ -1,8 +1,9 @@
 CREATE TABLE Training (
-  entity_id  serial  NOT NULL,
-  date_time  time    NOT NULL,
-  trainer_id integer NOT NULL,
+  entity_id  serial      NOT NULL,
+  date_time  TIMESTAMP   NOT NULL,
+  trainer_id integer     NOT NULL,
   type       varchar(20) NOT NULL,
+  receipts   integer     not null,
   CONSTRAINT Training_pk PRIMARY KEY (entity_id)
 ) WITH (
 OIDS = FALSE

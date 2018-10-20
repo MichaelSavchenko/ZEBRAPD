@@ -1,7 +1,7 @@
 package com.zebrapd.usermanagement.repositoty;
 
-import com.zebrapd.usermanagement.entity.Client;
 import com.zebrapd.usermanagement.entity.Trainer;
+import com.zebrapd.usermanagement.error.exception.TrainerNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -27,7 +27,8 @@ public class TrainerRepository {
 
     public Trainer getTrainerById(int entityId) {
         String query = "SELECT * FROM Trainer WHERE entity_id = ?";
-        return jdbcTemplate.queryForObject(query, new Object[]{entityId}, TRAINER_ROW_MAPPER);
+        List<Trainer> trainers = jdbcTemplate.query(query, new Object[]{entityId}, TRAINER_ROW_MAPPER);
+        return trainers.stream().findAny().orElse(null);
     }
 
     public Trainer getTrainerByEmail(String email) {
@@ -42,39 +43,39 @@ public class TrainerRepository {
         return trainers.stream().findFirst().orElse(null);
     }
 
-    public Trainer createTrainer(Trainer trainer){
+    public Trainer createTrainer(Trainer trainer) {
         KeyHolder key = new GeneratedKeyHolder();
         String query = "INSERT INTO Trainer (first_name, last_name, email, phone, active, default_salary) VALUES (?,?,?,?,?,?)";
         jdbcTemplate.update(
-            con -> {
-                final PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, trainer.getFirstName());
-                ps.setString(2, trainer.getLastName());
-                ps.setString(3, trainer.getEmail());
-                ps.setString(4, trainer.getPhoneNumber());
-                ps.setBoolean(5, trainer.isActive());
-                ps.setInt(6, trainer.getDefaultSalary());
-                return ps;
-            },
-            key);
+                con -> {
+                    final PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                    ps.setString(1, trainer.getFirstName());
+                    ps.setString(2, trainer.getLastName());
+                    ps.setString(3, trainer.getEmail());
+                    ps.setString(4, trainer.getPhoneNumber());
+                    ps.setBoolean(5, trainer.isActive());
+                    ps.setInt(6, trainer.getDefaultSalary());
+                    return ps;
+                },
+                key);
         trainer.setEntityId((Integer) Objects.requireNonNull(key.getKeys()).get("entity_id"));
         return trainer;
     }
 
-    public boolean updateTrainer(Trainer trainer){
+    public boolean updateTrainer(Trainer trainer) {
         String query = "UPDATE Trainer " +
-            "SET first_name = ?, last_name = ?, email = ?, phone = ?, active = ?, default_salary = ? " +
-            "WHERE entity_id = ?";
+                "SET first_name = ?, last_name = ?, email = ?, phone = ?, active = ?, default_salary = ? " +
+                "WHERE entity_id = ?";
         return 0 < jdbcTemplate.update(
-            query,
-            trainer.getFirstName(),
-            trainer.getLastName(),
-            trainer.getEmail(),
-            trainer.getPhoneNumber(),
-            trainer.isActive(),
-            trainer.getDefaultSalary(),
-            trainer.getEntityId()
-            );
+                query,
+                trainer.getFirstName(),
+                trainer.getLastName(),
+                trainer.getEmail(),
+                trainer.getPhoneNumber(),
+                trainer.isActive(),
+                trainer.getDefaultSalary(),
+                trainer.getEntityId()
+        );
     }
 
     public List<Trainer> getAllTrainers() {

@@ -1,7 +1,7 @@
 CREATE TABLE training_client (
   training_id integer NOT NULL,
   client_id   integer NOT NULL,
-  CONSTRAINT training_client_pk PRIMARY KEY (training_id)
+  CONSTRAINT training_client_pk PRIMARY KEY (training_id, client_id)
 ) WITH (
 OIDS = FALSE
 );

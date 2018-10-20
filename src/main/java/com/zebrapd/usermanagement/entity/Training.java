@@ -9,8 +9,8 @@ public class Training{
     private TrainingType trainingType;
     private int receipts;
     private LocalDateTime localDateTime;
-    private Trainer trainer;
-    private List<Client> clients;
+    private int trainerId;
+    private List<Integer> clientIds;
 
     public Integer getEntityId() {
         return entityId;
@@ -44,19 +44,19 @@ public class Training{
         this.localDateTime = localDateTime;
     }
 
-    public Trainer getTrainer() {
-        return trainer;
+    public int getTrainerId() {
+        return trainerId;
     }
 
-    public void setTrainer(Trainer trainer) {
-        this.trainer = trainer;
+    public void setTrainerId(int trainerId) {
+        this.trainerId = trainerId;
     }
 
-    public List<Client> getClients() {
-        return clients;
+    public List<Integer> getClientIds() {
+        return clientIds;
     }
 
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
+    public void setClientIds(List<Integer> clientIds) {
+        this.clientIds = clientIds;
     }
 }

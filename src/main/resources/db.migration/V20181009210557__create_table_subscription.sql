@@ -4,8 +4,8 @@ CREATE TABLE Subscription (
   type                varchar(20) NOT NULL,
   number_of_trainings integer     NOT NULL,
   price               integer     NOT NULL,
-  start_date          localDateTime        NOT NULL,
-  expiration_date     localDateTime        NOT NULL,
+  start_date          Date        NOT NULL,
+  expiration_date     Date        NOT NULL,
   CONSTRAINT Subscription_pk PRIMARY KEY (entity_id)
 ) WITH (
 OIDS = FALSE

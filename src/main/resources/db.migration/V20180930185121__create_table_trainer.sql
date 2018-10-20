@@ -5,7 +5,7 @@ CREATE TABLE Trainer (
   email          VARCHAR(255) NOT NULL,
   phone          VARCHAR(255) NOT NULL,
   active         BOOLEAN      NOT NULL,
-  default_salary integer      NOT NULL,
+  default_salary INTEGER      NOT NULL,
   CONSTRAINT Trainer_pk PRIMARY KEY (entity_id)
 ) WITH (
 OIDS = FALSE

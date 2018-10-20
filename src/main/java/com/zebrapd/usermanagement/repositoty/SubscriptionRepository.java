@@ -38,8 +38,8 @@ public class SubscriptionRepository {
             final PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, subscription.getClientId());
             ps.setString(2, subscription.getType().name());
-            ps.setInt(3, subscription.getPrice());
-            ps.setInt(4, subscription.getNumberOfTrainings());
+            ps.setInt(3, subscription.getNumberOfTrainings());
+            ps.setInt(4, subscription.getPrice());
             ps.setDate(5, Date.valueOf(subscription.getStartDate()));
             ps.setDate(6, Date.valueOf(subscription.getExpirationDate()));
             return ps;
@@ -53,14 +53,11 @@ public class SubscriptionRepository {
         return 0 < jdbcTemplate.update(query, numberOfTrainings, licenseId);
     }
 
-    public List<Subscription> getActiveSubscriptionByType(int clientId, TrainingType type){
+    public List<Subscription> getSubscriptionsByType(int clientId, TrainingType type){
         String query = "SELECT * FROM Subscription" +
             " WHERE client_id = ?" +
-            " AND type = ?" +
-            " AND number_of_trainings > 0" +
-            " AND expiration_date > ?";
-        Date date = Date.valueOf(LocalDate.now());
-        return jdbcTemplate.query(query, SUBSCRIPTION_ROW_MAPPER, clientId, type.name(), date);
+            " AND type = ?";
+        return jdbcTemplate.query(query, SUBSCRIPTION_ROW_MAPPER, clientId, type.name());
     }
 
     public List<Subscription> getNotExpiredSubscription(int clientId){
@@ -82,6 +79,7 @@ public class SubscriptionRepository {
             subscription.setEntityId(rs.getInt("entity_id"));
             subscription.setClientId(rs.getInt("client_id"));
             subscription.setType(TrainingType.valueOf(rs.getString("type")));
+            subscription.setNumberOfTrainings(rs.getInt("number_of_trainings"));
             subscription.setPrice(rs.getInt("price"));
             subscription.setStartDate(rs.getDate("start_date").toLocalDate());
             subscription.setExpirationDate(rs.getDate("expiration_date").toLocalDate());
