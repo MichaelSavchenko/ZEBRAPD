@@ -27,21 +27,23 @@ public class SubscriptionRepository {
         KeyHolder key = new GeneratedKeyHolder();
         String query = "INSERT INTO Subscription (" +
             "client_id," +
+            "date_of_sale," +
             " type," +
             " number_of_trainings," +
             " price," +
             " start_date," +
             " expiration_date)" +
-            " VALUES (?,?,?,?,?,?)";
+            " VALUES (?,?,?,?,?,?,?)";
 
         jdbcTemplate.update(con -> {
             final PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, subscription.getClientId());
-            ps.setString(2, subscription.getType().name());
-            ps.setInt(3, subscription.getNumberOfTrainings());
-            ps.setInt(4, subscription.getPrice());
-            ps.setDate(5, Date.valueOf(subscription.getStartDate()));
-            ps.setDate(6, Date.valueOf(subscription.getExpirationDate()));
+            ps.setDate(2, Date.valueOf(subscription.getDateOfSale()));
+            ps.setString(3, subscription.getType().name());
+            ps.setInt(4, subscription.getNumberOfTrainings());
+            ps.setInt(5, subscription.getPrice());
+            ps.setDate(6, Date.valueOf(subscription.getStartDate()));
+            ps.setDate(7, Date.valueOf(subscription.getExpirationDate()));
             return ps;
         }, key);
         subscription.setEntityId((Integer) Objects.requireNonNull(key.getKeys()).get("entity_id"));
@@ -77,6 +79,7 @@ public class SubscriptionRepository {
         public Subscription mapRow(ResultSet rs, int rowNum) throws SQLException {
             Subscription subscription = new Subscription();
             subscription.setEntityId(rs.getInt("entity_id"));
+            subscription.setDateOfSale(rs.getDate("date_of_sale").toLocalDate());
             subscription.setClientId(rs.getInt("client_id"));
             subscription.setType(TrainingType.valueOf(rs.getString("type")));
             subscription.setNumberOfTrainings(rs.getInt("number_of_trainings"));

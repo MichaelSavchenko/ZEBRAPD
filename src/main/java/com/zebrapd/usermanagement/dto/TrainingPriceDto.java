@@ -1,17 +1,17 @@
 package com.zebrapd.usermanagement.dto;
 
-import com.zebrapd.usermanagement.entity.TrainingType;
+import com.zebrapd.usermanagement.entity.TrainingPriceType;
 
 public class TrainingPriceDto {
-    private TrainingType trainingType;
+    private TrainingPriceType trainingPriceType;
     private int price;
 
-    public TrainingType getTrainingType() {
-        return trainingType;
+    public TrainingPriceType getTrainingPriceType() {
+        return trainingPriceType;
     }
 
-    public void setTrainingType(TrainingType trainingType) {
-        this.trainingType = trainingType;
+    public void setTrainingPriceType(TrainingPriceType trainingPriceType) {
+        this.trainingPriceType = trainingPriceType;
     }
 
     public int getPrice() {

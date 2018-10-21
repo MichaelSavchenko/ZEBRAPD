@@ -1,38 +1,22 @@
-package com.zebrapd.usermanagement.entity;
+package com.zebrapd.usermanagement.dto;
+
+import com.zebrapd.usermanagement.entity.TrainingType;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Training{
-    private Integer entityId;
-    private TrainingType trainingType;
-    private int receipts;
+public class TrainingDto {
+    private TrainingType type;
     private LocalDateTime localDateTime;
     private int trainerId;
     private List<Integer> clientIds;
 
-    public Integer getEntityId() {
-        return entityId;
+    public TrainingType getType() {
+        return type;
     }
 
-    public void setEntityId(Integer entityId) {
-        this.entityId = entityId;
-    }
-
-    public TrainingType getTrainingType() {
-        return trainingType;
-    }
-
-    public void setTrainingType(TrainingType trainingType) {
-        this.trainingType = trainingType;
-    }
-
-    public int getReceipts() {
-        return receipts;
-    }
-
-    public void setReceipts(int receipts) {
-        this.receipts = receipts;
+    public void setType(TrainingType type) {
+        this.type = type;
     }
 
     public LocalDateTime getLocalDateTime() {

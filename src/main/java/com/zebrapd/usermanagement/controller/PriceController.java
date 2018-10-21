@@ -1,7 +1,7 @@
 package com.zebrapd.usermanagement.controller;
 
 import com.zebrapd.usermanagement.dto.TrainingPriceDto;
-import com.zebrapd.usermanagement.entity.TrainingType;
+import com.zebrapd.usermanagement.entity.TrainingPriceType;
 import com.zebrapd.usermanagement.service.PriceService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +16,12 @@ public class PriceController {
     }
 
     @GetMapping
-    public int getTrainingPriceForAdmin(@RequestParam TrainingType type){
-        return priceService.getTrainingPriceForAdmin(type);
+    public int getTrainingPriceForAdmin(@RequestParam TrainingPriceType type){
+        return priceService.getTrainingPrice(type);
     }
 
     @PostMapping
     public void setTrainingPrice(@RequestBody TrainingPriceDto dto) {
-        priceService.setTrainingPrice(dto.getTrainingType(), dto.getPrice());
+        priceService.setTrainingPrice(dto.getTrainingPriceType(), dto.getPrice());
     }
 }

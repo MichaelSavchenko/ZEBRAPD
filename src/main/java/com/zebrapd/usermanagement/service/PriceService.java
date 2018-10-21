@@ -1,6 +1,6 @@
 package com.zebrapd.usermanagement.service;
 
-import com.zebrapd.usermanagement.entity.TrainingType;
+import com.zebrapd.usermanagement.entity.TrainingPriceType;
 import com.zebrapd.usermanagement.error.exception.TrainingTypeNotFoundException;
 import com.zebrapd.usermanagement.repositoty.TrainingRepository;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PriceService {
 
-    private final static int FULL_TRAINING_LIMIT = 6;
+    public final static int FULL_TRAINING_LIMIT = 6;
 
     private TrainingRepository trainingRepository;
 
@@ -17,28 +17,12 @@ public class PriceService {
         this.trainingRepository = trainingRepository;
     }
 
-    public void setTrainingPrice(TrainingType trainingType, int price) {
-        trainingRepository.setTrainingPrice(trainingType, price);
+    public void setTrainingPrice(TrainingPriceType trainingPriceType, int price) {
+        trainingRepository.setTrainingPrice(trainingPriceType, price);
     }
 
-    public int getTrainingPrice(TrainingType trainingType, int numberOfClients) {
 
-        if (trainingType.equals(TrainingType.PD) && numberOfClients < FULL_TRAINING_LIMIT){
-          trainingType = TrainingType.PD_NOT_FULL;
-        }
-
-        if (trainingType.equals(TrainingType.STRETCHING) && numberOfClients < FULL_TRAINING_LIMIT){
-            trainingType = TrainingType.STRETCHING_NOT_FULL;
-        }
-
-        Integer trainingPrice = trainingRepository.getTrainingPrice(trainingType);
-        if (trainingPrice == null) {
-            throw new TrainingTypeNotFoundException(String.format("Training type %s not founded", trainingType));
-        }
-        return trainingPrice;
-    }
-
-    public int getTrainingPriceForAdmin(TrainingType type) {
+    public int getTrainingPrice(TrainingPriceType type) {
         Integer trainingPrice = trainingRepository.getTrainingPrice(type);
         if (trainingPrice == null) {
             throw new TrainingTypeNotFoundException(String.format("Training type %s not founded", type));

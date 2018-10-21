@@ -1,7 +1,7 @@
 package com.zebrapd.usermanagement.repositoty;
 
 import com.zebrapd.usermanagement.entity.Training;
-import com.zebrapd.usermanagement.entity.TrainingType;
+import com.zebrapd.usermanagement.entity.TrainingPriceType;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -63,12 +63,12 @@ public class TrainingRepository {
             });
     }
 
-    public void setTrainingPrice(TrainingType type, int price) {
+    public void setTrainingPrice(TrainingPriceType type, int price) {
         String query = "UPDATE training_price SET price = ? WHERE training_type = ?";
         jdbcTemplate.update(query, price, type.name());
     }
 
-    public Integer getTrainingPrice(TrainingType type) {
+    public Integer getTrainingPrice(TrainingPriceType type) {
         String query = "SELECT price FROM training_price WHERE training_type = ?";
         return jdbcTemplate.queryForObject(query, new Object[]{type.name()}, Integer.class);
     }

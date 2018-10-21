@@ -1,5 +1,6 @@
 CREATE TABLE Subscription (
   entity_id           serial      NOT NULL,
+  date_of_sale        Date        NOT NULL,
   client_id           integer     NOT NULL,
   type                varchar(20) NOT NULL,
   number_of_trainings integer     NOT NULL,

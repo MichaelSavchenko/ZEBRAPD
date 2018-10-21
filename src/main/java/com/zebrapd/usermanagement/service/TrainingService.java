@@ -1,10 +1,7 @@
 package com.zebrapd.usermanagement.service;
 
 import com.zebrapd.usermanagement.dto.SaveTrainingResponseDto;
-import com.zebrapd.usermanagement.entity.Client;
-import com.zebrapd.usermanagement.entity.Subscription;
-import com.zebrapd.usermanagement.entity.Training;
-import com.zebrapd.usermanagement.entity.TrainingType;
+import com.zebrapd.usermanagement.entity.*;
 import com.zebrapd.usermanagement.repositoty.TrainingRepository;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +46,7 @@ public class TrainingService {
         return result;
     }
 
+    //todo change logic with training types
     private int subtractOneTraining(TrainingType trainingType, int clientId) {
         Subscription subscription = subscriptionService.getLastSubscriptionByType(clientId, trainingType);
         int trainingsLeft = (subscription.getNumberOfTrainings() - 1);
@@ -56,11 +54,13 @@ public class TrainingService {
         return trainingsLeft;
     }
 
+    //todo add logic of changing receipts
     public void addClient(int trainingId, int clientId, TrainingType trainingType) {
         trainingRepository.addClientsToTraining(trainingId, Collections.singletonList(clientId));
         subtractOneTraining(trainingType, clientId);
     }
 
+    //todo add logic of changing receipts
     public void removeClient(int trainingId, int clientId, TrainingType trainingType) {
         trainingRepository.removeClientFromTraining(trainingId,clientId);
         addOneTraining(trainingType, clientId);

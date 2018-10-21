@@ -1,11 +1,13 @@
 package com.zebrapd.usermanagement.service;
 
 import com.zebrapd.usermanagement.entity.Subscription;
+import com.zebrapd.usermanagement.entity.TrainingPriceType;
 import com.zebrapd.usermanagement.entity.TrainingType;
 import com.zebrapd.usermanagement.error.exception.SubscriptionException;
 import com.zebrapd.usermanagement.repositoty.SubscriptionRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
@@ -37,6 +39,7 @@ public class SubscriptionService {
             int newNumberOfTrainings = (subscription.getNumberOfTrainings() + numberOfTrainings);
             subscription.setNumberOfTrainings(newNumberOfTrainings);
         }
+        subscription.setDateOfSale(LocalDate.now());
         return subscriptionRepository.createSubscription(subscription);
     }
 

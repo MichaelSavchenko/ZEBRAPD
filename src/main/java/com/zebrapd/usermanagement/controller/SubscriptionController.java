@@ -1,6 +1,7 @@
 package com.zebrapd.usermanagement.controller;
 
 import com.zebrapd.usermanagement.entity.Subscription;
+import com.zebrapd.usermanagement.entity.TrainingPriceType;
 import com.zebrapd.usermanagement.entity.TrainingType;
 import com.zebrapd.usermanagement.service.SubscriptionService;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +24,8 @@ public class SubscriptionController {
     }
 
     @GetMapping("/getCurrentSubscriptionByType/{clientId}/{trainingType}")
-    public Subscription getCurrentSubscriptionByType(@PathVariable int clientId, @PathVariable String trainingType){
-        return subscriptionService.getLastSubscriptionByType(clientId, TrainingType.valueOf(trainingType));
+    public Subscription getCurrentSubscriptionByType(@PathVariable int clientId, @PathVariable TrainingType trainingType){
+        return subscriptionService.getLastSubscriptionByType(clientId, trainingType);
     }
 
     @GetMapping("/getNotExpiredLicense/{clientId}")

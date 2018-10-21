@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class Subscription {
     private Integer entityId;
+    private LocalDate dateOfSale;
     private int clientId;
     private TrainingType type;
     private int numberOfTrainings;
@@ -17,6 +18,14 @@ public class Subscription {
 
     public void setEntityId(Integer entityId) {
         this.entityId = entityId;
+    }
+
+    public LocalDate getDateOfSale() {
+        return dateOfSale;
+    }
+
+    public void setDateOfSale(LocalDate dateOfSale) {
+        this.dateOfSale = dateOfSale;
     }
 
     public int getClientId() {

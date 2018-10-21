@@ -1,9 +1,10 @@
 package com.zebrapd.usermanagement.controller;
 
+import com.zebrapd.usermanagement.converter.TrainingConverter;
 import com.zebrapd.usermanagement.dto.SaveTrainingResponseDto;
+import com.zebrapd.usermanagement.dto.TrainingDto;
 import com.zebrapd.usermanagement.entity.Training;
 import com.zebrapd.usermanagement.entity.TrainingType;
-import com.zebrapd.usermanagement.service.PriceService;
 import com.zebrapd.usermanagement.service.TrainingService;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,17 +13,16 @@ import org.springframework.web.bind.annotation.*;
 public class TrainingController {
 
     private TrainingService trainingService;
-    private PriceService priceService;
+    private TrainingConverter trainingConverter;
 
-    public TrainingController(TrainingService trainingService, PriceService priceService) {
+    public TrainingController(TrainingService trainingService, TrainingConverter trainingConverter) {
         this.trainingService = trainingService;
-        this.priceService = priceService;
+        this.trainingConverter = trainingConverter;
     }
 
     @PostMapping("/create")
-    public SaveTrainingResponseDto createTraining(@RequestBody Training training) {
-        int trainingPrice = priceService.getTrainingPrice(training.getTrainingType(), training.getClientIds().size());
-        training.setReceipts(trainingPrice);
+    public SaveTrainingResponseDto createTraining(@RequestBody TrainingDto trainingDto) {
+        Training training = trainingConverter.convertToEntity(trainingDto);
         return trainingService.saveTraining(training);
     }
 
