@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.*;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -37,24 +38,29 @@ public class TrainingRepository {
             return ps;
         }, keyHolder);
 
-        int trainingId = (Integer) Objects.requireNonNull(keyHolder.getKeys()).get("entity_id");
+        final int trainingId = (Integer) Objects.requireNonNull(keyHolder.getKeys()).get("entity_id");
+        final List<Integer> clientIds = training.getClientIds();
 
+        addClientsToTraining(trainingId, clientIds);
+        training.setEntityId(trainingId);
+        return training;
+    }
+
+    public void addClientsToTraining(int trainingId, List<Integer> clientIds) {
         String trainingClientQuery = "INSERT INTO training_client (training_id, client_id) VALUES (?,?)";
         jdbcTemplate.batchUpdate(trainingClientQuery,
             new BatchPreparedStatementSetter() {
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
                     ps.setInt(1, trainingId);
-                    ps.setInt(2, training.getClientIds().get(i));
+                    ps.setInt(2, clientIds.get(i));
                 }
 
                 @Override
                 public int getBatchSize() {
-                    return training.getClientIds().size();
+                    return clientIds.size();
                 }
             });
-        training.setEntityId(trainingId);
-        return training;
     }
 
     public void setTrainingPrice(TrainingType type, int price) {
@@ -65,5 +71,10 @@ public class TrainingRepository {
     public Integer getTrainingPrice(TrainingType type) {
         String query = "SELECT price FROM training_price WHERE training_type = ?";
         return jdbcTemplate.queryForObject(query, new Object[]{type.name()}, Integer.class);
+    }
+
+    public void removeClientFromTraining(int trainingId, int clientId) {
+        String query = "DELETE FROM training_client WHERE training_id = ? AND client_id = ?";
+        jdbcTemplate.update(query, trainingId, clientId);
     }
 }

@@ -8,6 +8,7 @@ import com.zebrapd.usermanagement.entity.TrainingType;
 import com.zebrapd.usermanagement.repositoty.TrainingRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -33,8 +34,7 @@ public class TrainingService {
         TrainingType trainingType = training.getTrainingType();
 
         for (int clientId : clientIds) {
-            Subscription subscription = subscriptionService.getLastSubscriptionByType(clientId, trainingType);
-            int trainingsLeft = (subscription.getNumberOfTrainings() - 1);
+            int trainingsLeft = subtractOneTraining(trainingType, clientId);
             if (trainingsLeft <= 0) {
                 Client clientById = clientService.getClientById(clientId);
                 if (trainingsLeft == 0) {
@@ -43,10 +43,32 @@ public class TrainingService {
                     result.addNomoreTrainings(clientById.getLastName() + " " + trainingsLeft);
                 }
             }
-            subscriptionService.setNumberOfTrainings(trainingsLeft, subscription.getEntityId());
         }
 
         trainingRepository.createTraining(training);
         return result;
+    }
+
+    private int subtractOneTraining(TrainingType trainingType, int clientId) {
+        Subscription subscription = subscriptionService.getLastSubscriptionByType(clientId, trainingType);
+        int trainingsLeft = (subscription.getNumberOfTrainings() - 1);
+        subscriptionService.setNumberOfTrainings(trainingsLeft, subscription.getEntityId());
+        return trainingsLeft;
+    }
+
+    public void addClient(int trainingId, int clientId, TrainingType trainingType) {
+        trainingRepository.addClientsToTraining(trainingId, Collections.singletonList(clientId));
+        subtractOneTraining(trainingType, clientId);
+    }
+
+    public void removeClient(int trainingId, int clientId, TrainingType trainingType) {
+        trainingRepository.removeClientFromTraining(trainingId,clientId);
+        addOneTraining(trainingType, clientId);
+    }
+
+    private void addOneTraining(TrainingType trainingType, int clientId) {
+        Subscription subscription = subscriptionService.getLastSubscriptionByType(clientId, trainingType);
+        int trainingsLeft = (subscription.getNumberOfTrainings() + 1);
+        subscriptionService.setNumberOfTrainings(trainingsLeft, subscription.getEntityId());
     }
 }

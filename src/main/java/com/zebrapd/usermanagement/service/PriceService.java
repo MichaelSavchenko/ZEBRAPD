@@ -27,8 +27,8 @@ public class PriceService {
           trainingType = TrainingType.PD_NOT_FULL;
         }
 
-        if (trainingType.equals(TrainingType.STRECHING) && numberOfClients < FULL_TRAINING_LIMIT){
-            trainingType = TrainingType.STRECHING_NOT_FULL;
+        if (trainingType.equals(TrainingType.STRETCHING) && numberOfClients < FULL_TRAINING_LIMIT){
+            trainingType = TrainingType.STRETCHING_NOT_FULL;
         }
 
         Integer trainingPrice = trainingRepository.getTrainingPrice(trainingType);
