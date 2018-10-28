@@ -24,7 +24,7 @@ public class SubscriptionService {
     public Optional<Subscription> getActiveSubscription(int clientId, TrainingType trainingType) {
         List<Subscription> subscriptions = subscriptionRepository.getActiveSubscriptions(clientId, trainingType);
         if (subscriptions.size() == 0) {
-           throw new SubscriptionException(String.format("Client '%s' has no active subscription of type %s", clientId, trainingType));
+           return Optional.empty();
         }
 
         return subscriptions.stream()

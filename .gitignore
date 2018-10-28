@@ -4,5 +4,4 @@
 out
 gen
 .gradle/
-gradle/
 src/test/

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/license")
+@RequestMapping("/subscription")
 public class SubscriptionController {
 
     private SubscriptionService subscriptionService;
@@ -29,10 +29,8 @@ public class SubscriptionController {
         return lastSubscriptionByType.orElse(null);
     }
 
-    @GetMapping("/getNotExpiredLicense/{clientId}")
+    @GetMapping("/getNotExpiredSubscription/{clientId}")
     public List<Subscription> getNotExpiredSubscription(@PathVariable int clientId){
         return subscriptionService.getNotExpiredSubscriptions(clientId);
     }
-
-
 }
