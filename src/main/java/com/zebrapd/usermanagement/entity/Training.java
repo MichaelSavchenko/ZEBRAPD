@@ -3,9 +3,9 @@ package com.zebrapd.usermanagement.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Training{
+public class Training {
     private Integer entityId;
-    private TrainingType trainingType;
+    private TrainingReceiptType trainingReceiptType;
     private int receipts;
     private LocalDateTime localDateTime;
     private int trainerId;
@@ -19,12 +19,12 @@ public class Training{
         this.entityId = entityId;
     }
 
-    public TrainingType getTrainingType() {
-        return trainingType;
+    public TrainingReceiptType getTrainingReceiptType() {
+        return trainingReceiptType;
     }
 
-    public void setTrainingType(TrainingType trainingType) {
-        this.trainingType = trainingType;
+    public void setTrainingReceiptType(TrainingReceiptType trainingReceiptType) {
+        this.trainingReceiptType = trainingReceiptType;
     }
 
     public int getReceipts() {

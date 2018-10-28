@@ -19,6 +19,10 @@ public class TrainingController {
         this.trainingService = trainingService;
         this.trainingConverter = trainingConverter;
     }
+    @GetMapping("/{trainingId}")
+    public Training training (@PathVariable int trainingId) {
+        return trainingService.getTraining(trainingId);
+    }
 
     @PostMapping("/create")
     public SaveTrainingResponseDto createTraining(@RequestBody TrainingDto trainingDto) {
@@ -27,12 +31,19 @@ public class TrainingController {
     }
 
     @PostMapping("/update{trainingId}/addClient{clientId}")
-    public void addClient(@PathVariable int trainingId, @PathVariable int clientId, @RequestParam TrainingType type) {
-        trainingService.addClient(trainingId, clientId, type);
+    public void addClient(@PathVariable int trainingId, @PathVariable int clientId) {
+        trainingService.addClient(trainingId, clientId);
     }
 
     @PostMapping("/update{trainingId}/removeClient{clientId}")
-    public void removeClient(@PathVariable int trainingId, @PathVariable int clientId, @RequestParam TrainingType type) {
-        trainingService.removeClient(trainingId, clientId, type);
+    public void removeClient(@PathVariable int trainingId, @PathVariable int clientId) {
+        trainingService.removeClient(trainingId, clientId);
     }
+
+    @PostMapping("/update{trainingId}/changeType{newType}")
+    public void changeTrainingType(@PathVariable int trainingId, @PathVariable TrainingType newType) {
+        trainingService.changeTrainingType(trainingId, newType);
+    }
+
+
 }

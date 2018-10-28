@@ -1,7 +1,6 @@
 package com.zebrapd.usermanagement.service;
 
 import com.zebrapd.usermanagement.entity.Client;
-import com.zebrapd.usermanagement.entity.Trainer;
 import com.zebrapd.usermanagement.error.exception.ValidationException;
 import com.zebrapd.usermanagement.repositoty.ClientRepository;
 import org.springframework.stereotype.Service;

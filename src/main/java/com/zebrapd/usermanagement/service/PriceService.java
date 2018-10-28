@@ -1,6 +1,6 @@
 package com.zebrapd.usermanagement.service;
 
-import com.zebrapd.usermanagement.entity.TrainingPriceType;
+import com.zebrapd.usermanagement.entity.TrainingReceiptType;
 import com.zebrapd.usermanagement.error.exception.TrainingTypeNotFoundException;
 import com.zebrapd.usermanagement.repositoty.TrainingRepository;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PriceService {
 
-    public final static int FULL_TRAINING_LIMIT = 6;
+    public final static int FULL_TRAINING_LIMIT = 5;
+    final static int INDIVIDUAL_TRAINING_LIMIT = 3;
 
     private TrainingRepository trainingRepository;
 
@@ -17,13 +18,13 @@ public class PriceService {
         this.trainingRepository = trainingRepository;
     }
 
-    public void setTrainingPrice(TrainingPriceType trainingPriceType, int price) {
-        trainingRepository.setTrainingPrice(trainingPriceType, price);
+    public void setTrainingPrice(TrainingReceiptType trainingReceiptType, int price) {
+        trainingRepository.setTrainingPrice(trainingReceiptType, price);
     }
 
 
-    public int getTrainingPrice(TrainingPriceType type) {
-        Integer trainingPrice = trainingRepository.getTrainingPrice(type);
+    public int getTrainingReciept(TrainingReceiptType type) {
+        Integer trainingPrice = trainingRepository.getTrainingReceipt(type);
         if (trainingPrice == null) {
             throw new TrainingTypeNotFoundException(String.format("Training type %s not founded", type));
         }

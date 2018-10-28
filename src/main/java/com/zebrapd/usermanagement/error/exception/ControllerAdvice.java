@@ -10,7 +10,13 @@ public class ControllerAdvice {
 
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ValidationExceptionDto handleValidationException(ValidationException e){
+    public ValidationExceptionDto handleValidationException(ValidationException e) {
+        return new ValidationExceptionDto(e.getMessage());
+    }
+
+    @ExceptionHandler(CanNotRemoveClientException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ValidationExceptionDto handleCanNotRemoveClientException(CanNotRemoveClientException e) {
         return new ValidationExceptionDto(e.getMessage());
     }
 
